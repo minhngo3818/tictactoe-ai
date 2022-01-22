@@ -14,9 +14,6 @@ int main()
     int num = SIZE_OF_BOARD;
     char tictactoe[SIZE_OF_BOARD][SUB_SIZE_OF_BOARD];    
 
-    resetGame(tictactoe);
-    printBoard(tictactoe);
-
     runGame(tictactoe);
 }
 
