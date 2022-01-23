@@ -16,4 +16,6 @@ void printBoard(char array[][SUB_SIZE_OF_BOARD]);
 
 void resetGame(char array[][SUB_SIZE_OF_BOARD]);
 
+int checkMoveRemains(char state[][SUB_SIZE_OF_BOARD]);
+
 #endif

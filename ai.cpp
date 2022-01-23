@@ -32,7 +32,7 @@ int evaluateScore(char array[][SUB_SIZE_OF_BOARD])
         }
     }
 
-    // Check diagonal line
+    // Check diagonal lines
     if ((array[0][0] == array[1][1] && array[0][0] == array[2][2]) ||
         ((array[0][2] == array[1][1] && array[0][2] == array[2][0])))
     {
@@ -49,11 +49,14 @@ int evaluateScore(char array[][SUB_SIZE_OF_BOARD])
 // AI action
 void AIMove(char array[][SUB_SIZE_OF_BOARD])
 {
-
+    
 }
 
 // AI calculation: can it be a recursive function ?
-int bestMove(char array[][SUB_SIZE_OF_BOARD], int depth, bool isMax)
+std::string bestMove(char state[][SUB_SIZE_OF_BOARD], int depth, bool AITurn)
 {
-    return 1;
+
+    int score = evaluateScore(state);
+
+    return "";
 }

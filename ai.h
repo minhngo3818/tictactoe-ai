@@ -7,6 +7,6 @@ int evaluateScore(char array[][SUB_SIZE_OF_BOARD]);
 
 void AIMove(char array[][SUB_SIZE_OF_BOARD]);
 
-int bestMove(char array[][SUB_SIZE_OF_BOARD], int depth, bool isMax);
+std::string bestMove(char state[][SUB_SIZE_OF_BOARD], int depth, bool isMax);
 
 #endif

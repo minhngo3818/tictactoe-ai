@@ -82,3 +82,19 @@ void resetGame(char array[][SUB_SIZE_OF_BOARD])
         }
     }
 }
+
+
+int checkMoveRemains(char state[][SUB_SIZE_OF_BOARD])
+{
+    int count = 0;
+    for (int row = 0; row < SIZE_OF_BOARD; row++)
+    {
+        for (int col = 0; col < SIZE_OF_BOARD; col++)
+        {
+            if (state[row][col] != player || state[row][col] != ai)
+                count++;
+        }
+    }
+
+    return count;
+}
