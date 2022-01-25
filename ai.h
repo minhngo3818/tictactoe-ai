@@ -2,11 +2,16 @@
 #define AI_H
 
 #include "interface.h"
+#include <map>
+
+struct smartMove
+{
+    int row, col;
+    int score;
+};
 
 int evaluateScore(char array[][SUB_SIZE_OF_BOARD]);
 
-void AIMove(char array[][SUB_SIZE_OF_BOARD]);
-
-std::string bestMove(char state[][SUB_SIZE_OF_BOARD], int depth, bool isMax);
+int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn);
 
 #endif

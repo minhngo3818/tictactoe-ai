@@ -45,18 +45,76 @@ int evaluateScore(char array[][SUB_SIZE_OF_BOARD])
     return 0;   // If there is not win state yet
 }
 
+// AI calculation:
+// @parameters: state - 2D array, int depth - moveRemains, bool player turn indicator 
+// @return best score
+// @Algorithm: 
+// Notes: In tictactoe there is 3 state win, draw, and loose
+//  but there can be a function to calculate to limit the moves to win
+//  in order to get better speed to win and resource-used efficiency
+// - evaluate current score
+// - indicate terminal state aka the state when program end with an outcome
+//     -> player wins
+//     -> ai wins
+// - check if it player's turn
+//     - use depth value to indicate how deep the recursive loop is
+//     - loop the board for empty spot -> make a move
+//     - recur the state in each turn of both player and ai respectively
+//         -> return the value of terminal state
+//     - compare with the current state
+//     - return the value of the current state -> store it in an array and use max/min to get best move
+// - check if the ai's turn
+//     <<do the same the logic as the player turn>>
+// - return the best score which indicate the best move
+// *addition: add a value that store the best position for ai
+// *addition2: there must a factor to calculate which state is better in a player turn
+// *problem: how can the function remember the how deep currently is,
+// every recursive loop will reset all value except the passed parameters
 
-// AI action
-void AIMove(char array[][SUB_SIZE_OF_BOARD])
+// Do the simple function that only 3 terminal state win-tie-loose
+int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn)
 {
-    
-}
+    if (depth == 0)
+        return evaluateScore(state);
+    else
+    {
+        if (aiTurn)
+        {
+            int bestScore = -100;
 
-// AI calculation: can it be a recursive function ?
-std::string bestMove(char state[][SUB_SIZE_OF_BOARD], int depth, bool AITurn)
-{
+            for (int row = 0; row < SIZE_OF_BOARD; row++)
+            {
+                for (int col = 0; col < SIZE_OF_BOARD; col++)
+                {
+                    if (state[row][col] == ' ')
+                    {
+                        state[row][col] = ai;
+                        bestScore = std::max(bestScore, minimax(state, depth-1, !aiTurn));
+                        state[row][col] = ' ';      // Undo move
+                    }
+                }
+            }
 
-    int score = evaluateScore(state);
+            return bestScore;
+        }
 
-    return "";
+        else    // Player's turn
+        {
+            int bestScore = 100;
+            for (int row = 0; row < SIZE_OF_BOARD; row++)
+            {
+                for (int col = 0; col < SIZE_OF_BOARD; col++)
+                {
+                    if (state[row][col] == ' ')
+                    {
+                        state[row][col] = player;
+                        bestScore = std::min(bestScore, minimax(state, depth-1, !aiTurn));
+                        state[row][col] = ' ';      // Undo move
+                    }
+                }
+            }
+
+            return bestScore;
+        }
+    }
 }
