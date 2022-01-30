@@ -5,7 +5,27 @@
 
 #include "ai.h"
 
+
+int checkMoveRemains(char state[][SUB_SIZE_OF_BOARD])
+{
+    int count = 0;
+
+    for (int row = 0; row < SIZE_OF_BOARD; row++)
+    {
+        for (int col = 0; col < SIZE_OF_BOARD; col++)
+        {
+            if (state[row][col] == ' ')
+                count++;
+        }
+    }
+
+    return count;
+}
+
 // Evaluate Score
+// player win: -10
+// ai win: 10
+// no winner: 0
 int evaluateScore(char array[][SUB_SIZE_OF_BOARD])
 {
     // Check row
@@ -76,12 +96,13 @@ int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn)
 {
     if (depth == 0)
         return evaluateScore(state);
+    else if (depth > 0 && evaluateScore(state) >= 0)
+        return evaluateScore(state);
     else
     {
         if (aiTurn)
         {
             int bestScore = -100;
-
             for (int row = 0; row < SIZE_OF_BOARD; row++)
             {
                 for (int col = 0; col < SIZE_OF_BOARD; col++)
@@ -116,5 +137,48 @@ int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn)
 
             return bestScore;
         }
+    }
+}
+
+
+void AIMove(char state[][SUB_SIZE_OF_BOARD])
+{
+    if (checkMoveRemains(state) == 9)
+    {
+        int randomRow = rand() % 3;
+        int randomCol = rand() % 3;
+        state[randomRow][randomCol] = ai;
+    }
+    else
+    {
+        int bestScore = -100;
+        MovePosition aiBestMove;
+
+        // Guess all possible moves from player
+        for (int row = 0; row < SUB_SIZE_OF_BOARD; row++)
+        {
+            for (int col = 0; col < SUB_SIZE_OF_BOARD; col++)
+            {
+                if (state[row][col] == ' ')
+                {
+                    state[row][col] = player;
+
+                    int guessScore = minimax(state, checkMoveRemains(state), true);
+
+                    // Undo player's move;
+                    state[row][col] = ' ';
+
+                    if (bestScore < guessScore)
+                    {
+                        bestScore = guessScore;
+                        aiBestMove.row = row;
+                        aiBestMove.col = col;
+                    }
+                }
+            }
+        }
+
+        // Ai makes a move
+        state[aiBestMove.row][aiBestMove.col] = ai;
     }
 }
