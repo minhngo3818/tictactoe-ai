@@ -56,10 +56,13 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
                     int rowPlayer = static_cast<int>(playerInput[0]);
                     int colPlayer = static_cast<int>(playerInput[2]);
                     state[rowPlayer][colPlayer] = player;
+
+
+                    // Add ai moving mechanic below this line
+                    // ......
+
                 }
             }
-
-
         }
         else
         {
