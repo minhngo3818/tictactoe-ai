@@ -61,7 +61,8 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
                     printBoard(state);
                     
                     AIMove(state);    
-                    printBoard(state);                
+                    printBoard(state); 
+                    // check update               
 
                 }
             }
