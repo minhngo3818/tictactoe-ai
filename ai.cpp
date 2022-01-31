@@ -18,7 +18,7 @@ int checkMoveRemains(char state[][SUB_SIZE_OF_BOARD])
                 count++;
         }
     }
-
+    std::cout << "\nAmount of remaining slots: " << count << std::endl;
     return count;
 }
 
@@ -143,11 +143,27 @@ int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn)
 
 void AIMove(char state[][SUB_SIZE_OF_BOARD])
 {
-    if (checkMoveRemains(state) == 9)
+    if (checkMoveRemains(state) == 8)
     {
         int randomRow = rand() % 3;
+        std::cout << "\nrandom row triggered " << randomRow << std::endl;
+
         int randomCol = rand() % 3;
-        state[randomRow][randomCol] = ai;
+        std::cout << "\nrandom row triggered " << randomRow << std::endl;
+
+        if (state[randomRow][randomCol] == player)
+        {
+            randomRow = (randomRow >= 1)?(randomRow - 1) : (randomRow + 1);
+            randomCol = (randomCol >= 1)?(randomCol - 1) : (randomCol + 1); 
+            state[randomRow][randomCol] = ai;
+
+            std::cout << "\nOverlap case triggered!\n";
+        }
+        else
+        {
+            state[randomRow][randomCol] = ai;
+            std::cout << "\n No overlap random occur\n";
+        }
     }
     else
     {
@@ -163,7 +179,7 @@ void AIMove(char state[][SUB_SIZE_OF_BOARD])
                 {
                     state[row][col] = player;
 
-                    int guessScore = minimax(state, checkMoveRemains(state), true);
+                    int guessScore = minimax(state, checkMoveRemains(state), false);
 
                     // Undo player's move;
                     state[row][col] = ' ';

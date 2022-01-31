@@ -9,9 +9,7 @@
 #include <iostream>
 #include <string>
 
-const int SIZE_OF_BOARD = 3;
-const int SUB_SIZE_OF_BOARD = 3;
-const char player = 'o', ai = 'x';
+#include "ai.h"
 
 void displayMenu();
 

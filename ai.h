@@ -6,9 +6,13 @@
 #ifndef AI_H
 #define AI_H
 
-#include "interface.h"
 #include <map>
 #include <cstdlib>
+
+const int SIZE_OF_BOARD = 3;
+const int SUB_SIZE_OF_BOARD = 3;
+const char player = 'o';
+const char ai = 'x';
 
 struct MovePosition
 {

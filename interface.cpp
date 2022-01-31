@@ -37,6 +37,7 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
                     std::cout << "\n\n    TOO BAD! YOU'RE LOST :((\n";
 
                 gameOn = false;
+                resetGame(state);
 
                 std::cout << "\n\n Wanna play a new game?\n";
             }
@@ -46,7 +47,7 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
                 std::cout << "\n\n >> Enter your move(eg. 2,1): ";
                 std::cin >> playerInput;
 
-                if (!improperInput(playerInput))
+                if (improperInput(playerInput))
                 {
                     std::cout << "\n\n :(( Please enter a proper input.";
                     continue;
@@ -56,10 +57,11 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
                     int rowPlayer = static_cast<int>(playerInput[0]);
                     int colPlayer = static_cast<int>(playerInput[2]);
                     state[rowPlayer][colPlayer] = player;
-
-
-                    // Add ai moving mechanic below this line
-                    // ......
+                    std::cout << "\nplayer made a move" << state[rowPlayer][colPlayer] << std::endl;
+                    printBoard(state);
+                    
+                    AIMove(state);    
+                    printBoard(state);                
 
                 }
             }
