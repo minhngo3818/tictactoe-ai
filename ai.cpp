@@ -94,9 +94,15 @@ int evaluateScore(char array[][SUB_SIZE_OF_BOARD])
 // Do the simple function that only 3 terminal state win-tie-loose
 int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn)
 {
+
+    int score = evaluateScore(state);
+
+    if (score == 10)
+        return score;
+    if (score == - 10)
+        return score;
+
     if (depth == 0)
-        return evaluateScore(state);
-    else if (depth > 0 && evaluateScore(state) >= 0)
         return evaluateScore(state);
     else
     {
