@@ -54,10 +54,10 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
                 }
                 else
                 {
-                    int rowPlayer = static_cast<int>(playerInput[0]);
+                    int rowPlayer = static_cast<int>(playerInput[0]);   // static cast does not work with char-> integer ==> result an index of char in ASCII
                     int colPlayer = static_cast<int>(playerInput[2]);
                     state[rowPlayer][colPlayer] = player;
-                    std::cout << "\nplayer made a move" << state[rowPlayer][colPlayer] << std::endl;
+                    std::cout << "\nplayer made a move " << rowPlayer << " " << colPlayer << std::endl;
                     printBoard(state);
                     
                     AIMove(state);    
@@ -130,15 +130,20 @@ void resetGame(char state[][SUB_SIZE_OF_BOARD])
 
 bool improperInput(const std::string& playerInput)
 {
-    if (playerInput.size() != 3)
-        return false;
-    else
+    if (playerInput.size() == 3)
     {
-        if ((playerInput[0] > -1 && playerInput[0] < 3)
-            && (playerInput[2] > -1 && playerInput[2] < 3)
-            && playerInput[1] == ',')
-            return true;
-        else
+        if ((playerInput[0] >= '0' && playerInput[0] <= '2') &&
+            (playerInput[2] >= '0' && playerInput[2] <= '2') &&
+            (playerInput[1] == ','))
             return false;
+        else    
+            return true;
     }
+    else 
+    {
+        std::cout << " playerInput size: " << playerInput.size() << std::endl;
+        return true;
+    }
+
+    return false;
 }

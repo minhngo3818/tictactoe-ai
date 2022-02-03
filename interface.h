@@ -7,6 +7,7 @@
 #define INTERFACE_H
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "ai.h"

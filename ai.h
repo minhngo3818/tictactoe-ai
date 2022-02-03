@@ -8,6 +8,7 @@
 
 #include <map>
 #include <cstdlib>
+#include <iostream>
 
 const int SIZE_OF_BOARD = 3;
 const int SUB_SIZE_OF_BOARD = 3;
