@@ -1,5 +1,5 @@
 // @author: Minh Minh
-// @filename: tictactoe
+// @filename: main.cpp
 // @date: 01/18/2022
 
 #include "interface.h"
