@@ -7,13 +7,10 @@
 #define AI_H
 
 #include <map>
-#include <cstdlib>
 #include <iostream>
 
-const int SIZE_OF_BOARD = 3;
-const int SUB_SIZE_OF_BOARD = 3;
-const char player = 'o';
-const char ai = 'x';
+const char player{ 'x' };
+const char ai{ 'o' };
 
 struct MovePosition
 {
@@ -21,12 +18,13 @@ struct MovePosition
     int col = -1;
 };
 
-int checkMoveRemains(char state[][SUB_SIZE_OF_BOARD]);
+int checkMoveRemains(char state[3][3]);
 
-int evaluateScore(char array[][SUB_SIZE_OF_BOARD]);
+int evaluateScore(char array[3][3]);
 
-int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn);
+int minimax(char state[3][3], int depth, bool aiTurn);
 
-void AIMove(char state[][SUB_SIZE_OF_BOARD]);
+void AIMove(char state[3][3]);
 
 #endif
+
