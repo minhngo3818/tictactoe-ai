@@ -10,18 +10,18 @@
 #include <sstream>
 #include <string>
 
-#include "ai.h"
 
 void displayMenu();
 
-void runGame(char state[][SUB_SIZE_OF_BOARD]);
+void runGame(char state[][3]);
 
-void printBoard(char state[][SUB_SIZE_OF_BOARD]);
+void printBoard(char state[][3]);
 
-void resetGame(char state[][SUB_SIZE_OF_BOARD]);
+void resetGame(char state[][3]);
 
-void playerMove(char state[][SUB_SIZE_OF_BOARD], std::string position);
+//void playerMove(char state[][3], const std::string& position);
 
 bool improperInput(const std::string& playerInput);
 
 #endif
+
