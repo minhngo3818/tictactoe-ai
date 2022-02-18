@@ -4,15 +4,17 @@
 
 
 #include "ai.h"
+#include <stdlib.h>
+#include <time.h>
 
 
-int checkMoveRemains(char state[][SUB_SIZE_OF_BOARD])
+int checkMoveRemains(char state[3][3])
 {
     int count = 0;
 
-    for (int row = 0; row < SIZE_OF_BOARD; row++)
+    for (int row = 0; row < 3; row++)
     {
-        for (int col = 0; col < SIZE_OF_BOARD; col++)
+        for (int col = 0; col < 3; col++)
         {
             if (state[row][col] == ' ')
                 count++;
@@ -26,10 +28,10 @@ int checkMoveRemains(char state[][SUB_SIZE_OF_BOARD])
 // player win: -10
 // ai win: 10
 // no winner: 0
-int evaluateScore(char array[][SUB_SIZE_OF_BOARD])
+int evaluateScore(char array[3][3])
 {
     // Check row
-    for (int row = 0; row < SIZE_OF_BOARD; row++)
+    for (int row = 0; row < 3; row++)
     {
         if (array[row][0] == array[row][1] && array[row][0] == array[row][2])
         {
@@ -41,7 +43,7 @@ int evaluateScore(char array[][SUB_SIZE_OF_BOARD])
     }
 
     // Check colum
-    for (int colum = 0; colum < SIZE_OF_BOARD; colum++)
+    for (int colum = 0; colum < 3; colum++)
     {
         if (array[0][colum] == array[1][colum] && array[0][colum] == array[2][colum])
         {
@@ -92,7 +94,7 @@ int evaluateScore(char array[][SUB_SIZE_OF_BOARD])
 // every recursive loop will reset all value except the passed parameters
 
 // Do the simple function that only 3 terminal state win-tie-loose
-int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn)
+int minimax(char state[3][3], int depth, bool aiTurn)
 {
 
     int score = evaluateScore(state);
@@ -101,89 +103,88 @@ int minimax(char state[][SUB_SIZE_OF_BOARD], int depth, bool aiTurn)
         return score;
     if (score == - 10)
         return score;
-
     if (depth == 0)
-        return evaluateScore(state);
-    else
+        return 0;
+    if (aiTurn)
     {
-        if (aiTurn)
+        int bestScore = -1000;
+        for (int row = 0; row < 3; row++)
         {
-            int bestScore = -100;
-            for (int row = 0; row < SIZE_OF_BOARD; row++)
+            for (int col = 0; col < 3; col++)
             {
-                for (int col = 0; col < SIZE_OF_BOARD; col++)
+                if (state[row][col] == ' ')
                 {
-                    if (state[row][col] == ' ')
-                    {
-                        state[row][col] = ai;
-                        bestScore = std::max(bestScore, minimax(state, depth-1, !aiTurn));
-                        state[row][col] = ' ';      // Undo move
-                    }
+                    state[row][col] = ai;
+                    bestScore = std::max(bestScore, minimax(state, depth - 1, !aiTurn));
+                    state[row][col] = ' ';      // Undo move
                 }
             }
-
-            return bestScore;
         }
 
-        else    // Player's turn
+        return bestScore;
+    }
+
+    else    // Player's turn
+    {
+        int bestScore = 1000;
+        for (int row = 0; row < 3; row++)
         {
-            int bestScore = 100;
-            for (int row = 0; row < SIZE_OF_BOARD; row++)
+            for (int col = 0; col < 3; col++)
             {
-                for (int col = 0; col < SIZE_OF_BOARD; col++)
+                if (state[row][col] == ' ')
                 {
-                    if (state[row][col] == ' ')
-                    {
-                        state[row][col] = player;
-                        bestScore = std::min(bestScore, minimax(state, depth-1, !aiTurn));
-                        state[row][col] = ' ';      // Undo move
-                    }
+                    state[row][col] = player;
+                    bestScore = std::min(bestScore, minimax(state, depth - 1, !aiTurn));
+                    state[row][col] = ' ';      // Undo move
                 }
             }
-
-            return bestScore;
         }
+
+        return bestScore;
     }
 }
 
 
-void AIMove(char state[][SUB_SIZE_OF_BOARD])
+void AIMove(char state[3][3])
 {
     if (checkMoveRemains(state) == 8)
     {
-        int randomRow = rand() % 3;
-        std::cout << "\nrandom row triggered " << randomRow << std::endl;
+        srand(time(NULL));      // initialize random seed, must call before using rand()
 
+        int randomRow  = rand() % 3;
         int randomCol = rand() % 3;
+
         std::cout << "\nrandom row triggered " << randomRow << std::endl;
+        std::cout << "\nrandom col triggered " << randomCol << std::endl;
 
         if (state[randomRow][randomCol] == player)
         {
             randomRow = (randomRow >= 1)?(randomRow - 1) : (randomRow + 1);
             randomCol = (randomCol >= 1)?(randomCol - 1) : (randomCol + 1); 
             state[randomRow][randomCol] = ai;
-
             std::cout << "\nOverlap case triggered!\n";
+            std::cout << "\nrandom col regenerated: " << randomRow << std::endl;
+            std::cout << "\nrandom col regenerated: " << randomCol << std::endl;
         }
         else
         {
             state[randomRow][randomCol] = ai;
-            std::cout << "\n No overlap random occur\n";
+            std::cout << "\n No overlaped random occur\n";
         }
     }
     else
     {
-        int bestScore = -100;
+        int bestScore = -1000;
         MovePosition aiBestMove;
 
         // Guess all possible moves from player
-        for (int row = 0; row < SUB_SIZE_OF_BOARD; row++)
+        for (int row = 0; row < 3; row++)
         {
-            for (int col = 0; col < SUB_SIZE_OF_BOARD; col++)
+            for (int col = 0; col < 3; col++)
             {
                 if (state[row][col] == ' ')
                 {
-                    state[row][col] = player;
+                    state[row][col] = ai;
 
                     int guessScore = minimax(state, checkMoveRemains(state), false);
 
