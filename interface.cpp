@@ -4,6 +4,10 @@
 
 
 #include "interface.h"
+#include "ai.h"
+
+extern const char player;
+extern const char ai;
 
 void displayMenu()
 {
@@ -14,7 +18,7 @@ void displayMenu()
     std::cout   << "        Are you ready to play ?\n\n";
 }
 
-void runGame(char state[][SUB_SIZE_OF_BOARD])
+void runGame(char state[][3])
 {
     std::string playerInput = "c";
     bool menuTrigger = true;
@@ -25,10 +29,10 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
     {
         if (gameOn)
         {
-            if (checkMoveRemains(state) == 0)
-            {
-                int finalScore = evaluateScore(state);
+            int finalScore = evaluateScore(state);
 
+            if (checkMoveRemains(state) == 0 || finalScore > 0 || finalScore < 0)
+            {
                 if (finalScore == 0)
                     std::cout << "\n\n    !-!-!- NO WINNER -!-!-! \n";
                 else if (finalScore == -10)
@@ -39,7 +43,7 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
                 gameOn = false;
                 resetGame(state);
 
-                std::cout << "\n\n Wanna play a new game?\n";
+                std::cout << "\nWanna play a new game?\n\n";
             }
             else
             {
@@ -54,14 +58,20 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
                 }
                 else
                 {
-                    int rowPlayer = static_cast<int>(playerInput[0]);   // static cast does not work with char-> integer ==> result an index of char in ASCII
-                    int colPlayer = static_cast<int>(playerInput[2]);
-                    state[rowPlayer][colPlayer] = player;
-                    std::cout << "\nplayer made a move " << rowPlayer << " " << colPlayer << std::endl;
-                    printBoard(state);
-                    
-                    AIMove(state);    
-                    printBoard(state);               
+                    int rowPlayer = static_cast<int>(playerInput[0]) - '0';   
+                    // convert char to int: static_cast<int>(int) - '0'
+                    int colPlayer = static_cast<int>(playerInput[2]) - '0'; 
+                    if (state[rowPlayer][colPlayer] == ai)
+                    {
+                        std::cout << "\n !! The position was occupied. !!\n";
+                    }
+                    else
+                    {
+                        state[rowPlayer][colPlayer] = player;
+                        printBoard(state);
+                        AIMove(state);
+                        printBoard(state);
+                    }             
                 }
             }
         }
@@ -92,16 +102,16 @@ void runGame(char state[][SUB_SIZE_OF_BOARD])
     }
 }
 
-void printBoard(char state[][SUB_SIZE_OF_BOARD])
+void printBoard(char state[][3])
 {
-    std::cout   << "\n====================================\n"
+    std::cout   << "\n====================================\n\n"
                 << "              0   1   2\n"
                 << "         -----------------\n";
-    int limitPrint = SIZE_OF_BOARD - 1;
-    for (int row = 0; row < SIZE_OF_BOARD; row++)
+    int limitPrint = 3 - 1;
+    for (int row = 0; row < 3; row++)
     {
         std::cout << "\t " << row << "  | ";
-        for (int col = 0; col < SIZE_OF_BOARD; col++)
+        for (int col = 0; col < 3; col++)
         {
             std::cout << state[row][col];
 
@@ -116,16 +126,17 @@ void printBoard(char state[][SUB_SIZE_OF_BOARD])
     }
 }
 
-void resetGame(char state[][SUB_SIZE_OF_BOARD])
+void resetGame(char state[][3])
 {
-    for (int row = 0; row < SIZE_OF_BOARD; row++)
+    for (int row = 0; row < 3; row++)
     {
-        for (int col = 0; col < SIZE_OF_BOARD; col++)
+        for (int col = 0; col < 3; col++)
         {
             state[row][col] = ' ';
         }
     }
 }
+
 
 
 bool improperInput(const std::string& playerInput)
